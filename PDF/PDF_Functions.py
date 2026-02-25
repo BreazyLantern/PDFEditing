@@ -1,12 +1,26 @@
 from pypdf import PdfReader, PdfWriter
 import os
 import re
+from pathlib import Path
+import sys
 from collections import Counter
 
 class PDFOps:
     def __init__(self):
         self.file = None
-        self.output = os.path.dirname(os.path.realpath(__file__))
+        self.output = None
+        if getattr(sys, 'frozen', False):
+            # This block is executed if the script is running inside a PyInstaller/similar executable
+            print("Running in a standalone executable (.exe)")
+            print(f"Executable path: {sys.executable}")
+            current_dir = Path(__file__).parent if "__file__" in locals() else Path.cwd()
+            file_path = os.path.abspath(current_dir)
+            self.output = file_path
+        else:
+            # This block is executed if the script is running as a normal .py file
+            print("Running as a Python script (.py)")
+            print(f"Interpreter path: {sys.executable}")
+            self.output = os.path.dirname(os.path.realpath(__file__))
 
     def Continue(self):
         input("Press Any key to continue...")
@@ -67,6 +81,7 @@ class PDFOps:
 
 
         print(f"Rotated {self.file} and saved as {self.output}")
+        self.Continue()
 
     def reorder_pdf(self):
         reader = PdfReader(self.file)
@@ -119,3 +134,4 @@ class PDFOps:
             print(f"An unexpected error occurred: {e}")
 
         print(f"PDF successfully reordered and saved to {self.output}")
+        self.Continue()
