@@ -2,8 +2,8 @@ from pypdf import PdfReader, PdfWriter
 
 class PDFOps:
     def __init__(self):
-        self.file = "output2.pdf"
-        self.output = r'C:\Users\Terry\PycharmProjects\PDFReorganizer\PDF\output.pdf'
+        self.file = "inputfile.pdf"
+        self.output = 'outputfile.pdf'
 
 
     def set_file(self, file):
